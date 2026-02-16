@@ -87,6 +87,3 @@ Also, any Licenses applied to this Product outside of this License are deemed as
     1. If the End User finds Exploits, Bugs, or any of the likes, contact the Founder directly so it can be resolved immediately.
     2. The user may not alter this Product for purposes of altering a Developer's Project and how it works.
     3. If deemed necessary the Organization or Founder may add more restriction's to this Section.
-Alterations not allowed would be for example changing of comments, stripping of comments, adding of comments, changing variable names, changing variable types, or adding or removing variables that make no change to the code.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
