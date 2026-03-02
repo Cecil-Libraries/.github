@@ -1,5 +1,6 @@
 ### Cecil Libraries License (1.0.0)
 *An License, created by Cecil Libraries to handle legality related to Usage of Software and related Components to the Product.*
+
 Copyright 2025 Cecil Libraries Organization and the Founder(s) Chaosyr
 ___
 In the case where it so falls that a Sub-License and this License conflicts, this License dictates. 
