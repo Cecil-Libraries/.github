@@ -1,6 +1,7 @@
 ### Cecil Libraries License (1.1.0)
 *An Open/Reserved-Source License, created by Cecil Libraries to handle legality related to Usage of Software and related Components to the Product.*
-* Copyright 2025 Cecil Libraries Organization and the Founder(s) Chaosyr
+
+Copyright 2025 Cecil Libraries Organization and the Founder(s) Chaosyr
 ___
 #### Definitions
 
