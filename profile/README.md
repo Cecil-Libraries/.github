@@ -18,4 +18,4 @@ We aim to provide as much as we can (e.g. Helpers, Utilities, Examples, and so o
 * GMAIL; cecil.libraries@gmail.com
 * NuGet; https://www.nuget.org/profiles/Cecil_Libraries_Organization_Org
 * NuGet; https://www.nuget.org/profiles/Cecil_Libraries_Organization
-* StoatGames; https://stoatgames.icu/homepage-cecil-libraries-organization/
+* StoatGames; https://stoatgames.icu/cecil-libraries-organization/
