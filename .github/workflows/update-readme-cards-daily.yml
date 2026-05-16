@@ -14,4 +14,4 @@ jobs:
       is_user: false
       theme: "shades-of-purple"
     secrets:
-      github_token: ${{ secrets.STATS }}
+      token: ${{ secrets.STATS }}
