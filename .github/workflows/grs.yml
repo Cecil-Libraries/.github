@@ -36,7 +36,7 @@ jobs:
         with:
           card: pin
           options: username=${{ env.REPO_AUTHOR }}&repo=${{ env.REPO_NAME }}&theme=shades-of-purple&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
-          path: profile/pin-readme-tools-github-readme-stats.svg
+          path: profile/${{ env.REPO_AUTHOR }} - repo=${{ env.REPO_NAME }}.svg
           token: ${{ secrets.STATS }}
 
       - name: Commit cards
