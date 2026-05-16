@@ -1,20 +1,25 @@
-name: Respository Cards
+name: Repository Cards
 
 on:
   workflow_dispatch:
     inputs:
       repo_author:
-        description: 'GitHub Username'
+        description: "GitHub Username"
         required: true
-        default: 'your-username'
+        default: "your-username"
       repo_name:
-        description: 'Repository Name'
+        description: "Repository Name"
         required: true
-        default: 'your-repo'
+        default: "your-repo"
       theme:
-        description: 'Card Theme'
+        description: "Card Theme"
         required: false
-        default: 'shades-of-purple'
+        default: "shades-of-purple"
+      token:
+        description: "Optional token override"
+        required: false
+        default: ""
+
   workflow_call:
     inputs:
       repo_author:
@@ -26,11 +31,16 @@ on:
       theme:
         type: string
         required: false
-        default: 'shades-of-purple'
+        default: "shades-of-purple"
+    secrets:
+      token:
+        required: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ACTIVE_TOKEN: ${{ secrets.token || github.event.inputs.token || secrets.STATS || github.token }}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,7 +50,7 @@ jobs:
           card: pin
           options: username=${{ inputs.repo_author }}&repo=${{ inputs.repo_name }}&theme=${{ inputs.theme }}&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
           path: profile/${{ inputs.repo_author }} - repo=${{ inputs.repo_name }}.svg
-          token: ${{ secrets.STATS }}
+          token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Commit cards
         run: |
