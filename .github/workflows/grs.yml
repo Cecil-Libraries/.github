@@ -4,6 +4,31 @@ on:
   schedule:
     - cron: "0 3 * * *"
   workflow_dispatch:
+    inputs:
+      manual_repos:
+        description: 'JSON array of repositories to process'
+        required: false
+        default: '[".github"]'
+      repository_owner:
+        description: 'The Repository Owners Name'
+        required: false
+        default: 'Cecil-Libraries'
+      theme:
+        description: 'The Theme to Utilize'
+        required: false
+        default: 'shades-of-purple'
+      github_token:
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  DEFAULT_REPOS: '["Cecil-ANSI-Utils"]'
+  REPO_OWNER: ${{ github.event.inputs.repository_owner || 'Cecil-Libraries' }}
+  ACTIVE_THEME: ${{ github.event.inputs.theme || 'shades-of-purple' }}
+  ACTIVE_TOKEN: ${{ github.event.inputs.github_token || secrets.STATS || github.token }}
 
 jobs:
   build:
@@ -15,17 +40,17 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: stats
-          options: username=${{ github.repository_owner }}&show_icons=true&theme=shades-of-purple
+          options: username=${{ env.REPO_OWNER }}&show_icons=true&theme=${{ env.ACTIVE_THEME }}
           path: profile/stats.svg
-          token: ${{ secrets.STATS }}
+          token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Generate top languages card
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&langs_count=6&theme=shades-of-purple
+          options: username=${{ env.REPO_OWNER }}&layout=compact&langs_count=6&theme=${{ env.ACTIVE_THEME }}
           path: profile/top-langs.svg
-          token: ${{ secrets.STATS }}
+          token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Commit cards
         run: |
@@ -37,9 +62,12 @@ jobs:
       
   call-repo-cards:
     needs: build
+    strategy:
+      matrix:
+        repo: ${{ fromJSON(github.event.inputs.manual_repos || env.DEFAULT_REPOS) }}
     uses: ./.github/workflows/repository-cards.yml
     with:
-      repo_author: "Cecil-Libraries"
-      repo_name: "Cecil-ANSI-Utils"
-      theme: "shades-of-purple"
+      repo_author: ${{ env.REPO_OWNER }}
+      repo_name: ${{ matrix.repo }}
+      theme: ${{ env.ACTIVE_THEME }}
     secrets: inherit
