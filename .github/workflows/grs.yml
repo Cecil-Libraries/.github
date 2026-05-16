@@ -5,10 +5,6 @@ on:
     - cron: "0 3 * * *"
   workflow_dispatch:
 
-env:
-  REPO_AUTHOR: "Cecil-Libraries"
-  REPO_NAME: "Cecil-ANSI-Utils"
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,14 +27,6 @@ jobs:
           path: profile/top-langs.svg
           token: ${{ secrets.STATS }}
 
-      - name: Generate pin card
-        uses: readme-tools/github-readme-stats-action@v1
-        with:
-          card: pin
-          options: username=${{ env.REPO_AUTHOR }}&repo=${{ env.REPO_NAME }}&theme=shades-of-purple&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
-          path: profile/${{ env.REPO_AUTHOR }} - repo=${{ env.REPO_NAME }}.svg
-          token: ${{ secrets.STATS }}
-
       - name: Commit cards
         run: |
           git config user.name "github-actions"
@@ -46,3 +34,12 @@ jobs:
           git add profile/*.svg
           git commit -m "Update README cards" || exit 0
           git push
+      
+  call-repo-cards:
+    needs: build
+    uses: ./.github/workflows/repository-cards.yml
+    with:
+      repo_author: "Cecil-Libraries"
+      repo_name: "Cecil-ANSI-Utils"
+      theme: "shades-of-purple"
+    secrets: inherit
