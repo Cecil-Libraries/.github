@@ -6,33 +6,34 @@ on:
   workflow_dispatch:
     inputs:
       manual_repos:
-        description: 'JSON array of repositories to process'
+        description: "JSON array of repositories to process"
         required: false
         default: '[".github"]'
       repository_owner:
-        description: 'The Repository Owners Name'
+        description: "The Repository Owners Name"
         required: false
-        default: 'Cecil-Libraries'
+        default: "Cecil-Libraries"
       theme:
-        description: 'The Theme to Utilize'
+        description: "The Theme to Utilize"
         required: false
-        default: 'shades-of-purple'
+        default: "shades-of-purple"
       github_token:
+        description: "Optional token override"
         required: false
-        type: string
 
 permissions:
   contents: write
 
 env:
   DEFAULT_REPOS: '["Cecil-ANSI-Utils"]'
-  REPO_OWNER: ${{ github.event.inputs.repository_owner || 'Cecil-Libraries' }}
-  ACTIVE_THEME: ${{ github.event.inputs.theme || 'shades-of-purple' }}
-  ACTIVE_TOKEN: ${{ github.event.inputs.github_token || secrets.STATS || github.token }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      REPO_OWNER: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
+      ACTIVE_THEME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
+      ACTIVE_TOKEN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.github_token || secrets.STATS || github.token }}
     steps:
       - uses: actions/checkout@v4
 
@@ -59,15 +60,15 @@ jobs:
           git add profile/*.svg
           git commit -m "Update README cards" || exit 0
           git push
-      
+
   call-repo-cards:
     needs: build
     strategy:
       matrix:
-        repo: ${{ fromJSON(github.event.inputs.manual_repos || env.DEFAULT_REPOS) }}
+        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || env.DEFAULT_REPOS) }}
     uses: ./.github/workflows/repository-cards.yml
     with:
-      repo_author: ${{ env.REPO_OWNER }}
+      repo_author: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
       repo_name: ${{ matrix.repo }}
-      theme: ${{ env.ACTIVE_THEME }}
+      theme: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
     secrets: inherit
