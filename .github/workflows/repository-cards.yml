@@ -1,4 +1,4 @@
-name: Repository Cards
+name: Generate Repository Cards
 
 on:
   workflow_dispatch:
