@@ -10,9 +10,14 @@ on:
         required: false
         default: '[".github"]'
       repository_owner:
-        description: "The Repository Owners Name"
+        description: "The Repository Owners Name (Cannot be a Organization)"
         required: false
         default: "Cecil-Libraries"
+      is_user:
+        description: "True for user, false for organization"
+        type: boolean
+        required: false
+        default: false
       theme:
         description: "The Theme to Utilize"
         required: false
@@ -38,6 +43,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Generate stats card
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: stats
@@ -46,6 +52,7 @@ jobs:
           token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Generate top languages card
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: top-langs
@@ -54,6 +61,7 @@ jobs:
           token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Commit cards
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
