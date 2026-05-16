@@ -1,4 +1,4 @@
-name: Update README Cards
+name: Regenerate README Cards Daily
 
 on:
   schedule:
