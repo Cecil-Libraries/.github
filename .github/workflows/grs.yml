@@ -74,8 +74,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || env.DEFAULT_REPOS) }}
-
+        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || '["Cecil-ANSI-Utils"]') }}
     uses: ./.github/workflows/repository-cards.yml
     with:
       repo_author: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
