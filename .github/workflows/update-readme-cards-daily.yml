@@ -7,7 +7,7 @@ on:
 
 jobs:
   run-grs:
-    uses: ./.github/workflows/grs.yml
+    uses: ./.github/workflows/github-readme-cards-gen.yml
     with:
       manual_repos: '[".github", "Cecil-ANSI-Utils", "Cecil-Bridge", "ANSI-Utils-Tester", "Cecil-Testers"]'
       repository_owner: "Cecil-Libraries"
