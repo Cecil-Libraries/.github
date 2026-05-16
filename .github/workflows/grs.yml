@@ -71,4 +71,5 @@ jobs:
       repo_author: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
       repo_name: ${{ matrix.repo }}
       theme: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
-    secrets: inherit
+    secrets:
+      token: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.github_token || secrets.STATS || github.token }}
