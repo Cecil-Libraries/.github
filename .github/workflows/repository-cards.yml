@@ -1,0 +1,29 @@
+name: Respository Cards
+
+on:
+  workflow_dispatch:
+    inputs:
+      repo_author:
+        description: 'GitHub Username'
+        required: true
+        default: 'your-username'
+      repo_name:
+        description: 'Repository Name'
+        required: true
+        default: 'your-repo'
+      theme:
+        description: 'Card Theme'
+        required: false
+        default: 'shades-of-purple'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate pin card
+        uses: readme-tools/github-readme-stats-action@v1
+        with:
+          card: pin
+          options: username=${{ github.event.inputs.repo_author }}&repo=${{ github.event.inputs.repo_name }}&theme=${{ github.event.inputs.theme }}&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
+          path: profile/${{ github.event.inputs.repo_author }} - repo=${{ github.event.inputs.repo_name }}.svg
+          token: ${{ secrets.STATS }}
