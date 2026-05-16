@@ -15,10 +15,9 @@ on:
         description: "Card Theme"
         required: false
         default: "shades-of-purple"
+    secrets:
       token:
-        description: "Optional token override"
         required: false
-        default: ""
 
   workflow_call:
     inputs:
@@ -40,7 +39,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      ACTIVE_TOKEN: ${{ secrets.token || github.event.inputs.token || secrets.STATS || github.token }}
+      ACTIVE_TOKEN: ${{ secrets.token || secrets.STATS || github.token }}
+      REPO_AUTHOR: ${{ inputs.repo_author }}
+      REPO_NAME: ${{ inputs.repo_name }}
+      THEME: ${{ inputs.theme }}
     steps:
       - uses: actions/checkout@v4
 
@@ -48,8 +50,8 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: pin
-          options: username=${{ inputs.repo_author }}&repo=${{ inputs.repo_name }}&theme=${{ inputs.theme }}&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
-          path: profile/${{ inputs.repo_author }} - repo=${{ inputs.repo_name }}.svg
+          options: username=${{ env.REPO_AUTHOR }}&repo=${{ env.REPO_NAME }}&theme=${{ env.THEME }}&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage
+          path: profile/${{ env.REPO_AUTHOR }}-${{ env.REPO_NAME }}.svg
           token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Commit cards
@@ -57,5 +59,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add profile/*.svg
-          git commit -m "Update Pin Card for ${{ inputs.repo_name }}" || exit 0
+          git commit -m "Update Pin Card for ${{ env.REPO_NAME }}" || exit 0
           git push
