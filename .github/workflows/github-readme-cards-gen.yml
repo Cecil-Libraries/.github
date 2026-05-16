@@ -6,10 +6,12 @@ on:
       manual_repos:
         description: "JSON array of repositories to process"
         required: false
+        type: string
         default: '[]'
       repository_owner:
         description: "The Repository Owner (User, not Org)"
         required: false
+        type: string
         default: "Cecil-Libraries"
       is_user:
         description: "True for user, false for organization"
@@ -18,6 +20,7 @@ on:
         default: false
       theme:
         description: "Theme to use"
+        type: string
         required: false
         default: "shades-of-purple"
     secrets:
