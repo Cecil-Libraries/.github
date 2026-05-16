@@ -1,6 +1,28 @@
 name: Generate README Cards
 
 on:
+  workflow_call:
+    inputs:
+      manual_repos:
+        description: "JSON array of repositories to process"
+        required: false
+        default: '[]'
+      repository_owner:
+        description: "The Repository Owner (User, not Org)"
+        required: false
+        default: "Cecil-Libraries"
+      is_user:
+        description: "True for user, false for organization"
+        type: boolean
+        required: false
+        default: false
+      theme:
+        description: "Theme to use"
+        required: false
+        default: "shades-of-purple"
+    secrets:
+      github_token:
+        required: false
   workflow_dispatch:
     inputs:
       manual_repos:
