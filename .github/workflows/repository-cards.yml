@@ -43,6 +43,7 @@ jobs:
       REPO_AUTHOR: ${{ inputs.repo_author }}
       REPO_NAME: ${{ inputs.repo_name }}
       THEME: ${{ inputs.theme }}
+
     steps:
       - uses: actions/checkout@v4
 
