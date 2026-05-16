@@ -34,9 +34,11 @@ on:
     secrets:
       token:
         required: false
-
+        
 jobs:
   build:
+    strategy:
+      max-parallel: 1
     runs-on: ubuntu-latest
     env:
       ACTIVE_TOKEN: ${{ secrets.token || secrets.STATS || github.token }}
@@ -59,6 +61,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          git add profile/*.svg
+          git add profile/${{ env.REPO_AUTHOR }}-${{ env.REPO_NAME }}.svg
           git commit -m "Update Pin Card for ${{ env.REPO_NAME }}" || exit 0
+          git pull --rebase
           git push
