@@ -10,7 +10,7 @@ on:
         required: false
         default: '[".github"]'
       repository_owner:
-        description: "The Repository Owners Name (Cannot be a Organization)"
+        description: "The Repository Owner (User, not Org)"
         required: false
         default: "Cecil-Libraries"
       is_user:
@@ -19,11 +19,11 @@ on:
         required: false
         default: false
       theme:
-        description: "The Theme to Utilize"
+        description: "Theme to use"
         required: false
         default: "shades-of-purple"
+    secrets:
       github_token:
-        description: "Optional token override"
         required: false
 
 permissions:
@@ -38,7 +38,8 @@ jobs:
     env:
       REPO_OWNER: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
       ACTIVE_THEME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
-      ACTIVE_TOKEN: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.github_token || secrets.STATS || github.token }}
+      ACTIVE_TOKEN: ${{ secrets.github_token || secrets.STATS || github.token }}
+
     steps:
       - uses: actions/checkout@v4
 
@@ -73,7 +74,8 @@ jobs:
     needs: build
     strategy:
       matrix:
-        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || '["Cecil-ANSI-Utils"]') }}
+        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || env.DEFAULT_REPOS) }}
+
     uses: ./.github/workflows/repository-cards.yml
     with:
       repo_author: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
