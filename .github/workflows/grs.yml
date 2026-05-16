@@ -1,14 +1,12 @@
 name: Update README cards
 
 on:
-  schedule:
-    - cron: "0 3 * * *"
   workflow_dispatch:
     inputs:
       manual_repos:
         description: "JSON array of repositories to process"
         required: false
-        default: '[".github"]'
+        default: '[]'
       repository_owner:
         description: "The Repository Owner (User, not Org)"
         required: false
@@ -29,22 +27,19 @@ on:
 permissions:
   contents: write
 
-env:
-  DEFAULT_REPOS: '["Cecil-ANSI-Utils"]'
-
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      REPO_OWNER: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
-      ACTIVE_THEME: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
+      REPO_OWNER: ${{ github.event.inputs.repository_owner || 'Cecil-Libraries' }}
+      ACTIVE_THEME: ${{ github.event.inputs.theme || 'shades-of-purple' }}
       ACTIVE_TOKEN: ${{ secrets.github_token || secrets.STATS || github.token }}
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Generate stats card
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
+        if: ${{ github.event.inputs.is_user == 'true' }}
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: stats
@@ -53,7 +48,7 @@ jobs:
           token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Generate top languages card
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
+        if: ${{ github.event.inputs.is_user == 'true' }}
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: top-langs
@@ -62,7 +57,7 @@ jobs:
           token: ${{ env.ACTIVE_TOKEN }}
 
       - name: Commit cards
-        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.is_user == 'true' }}
+        if: ${{ github.event.inputs.is_user == 'true' }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
@@ -72,13 +67,14 @@ jobs:
 
   call-repo-cards:
     needs: build
+    if: ${{ github.event.inputs.manual_repos != '[]' }}
     strategy:
       matrix:
-        repo: ${{ fromJSON(github.event_name == 'workflow_dispatch' && github.event.inputs.manual_repos || '["Cecil-ANSI-Utils"]') }}
+        repo: ${{ fromJSON(github.event.inputs.manual_repos) }}
     uses: ./.github/workflows/repository-cards.yml
     with:
-      repo_author: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.repository_owner || 'Cecil-Libraries' }}
+      repo_author: ${{ github.event.inputs.repository_owner || 'Cecil-Libraries' }}
       repo_name: ${{ matrix.repo }}
-      theme: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.theme || 'shades-of-purple' }}
+      theme: ${{ github.event.inputs.theme || 'shades-of-purple' }}
     secrets:
-      token: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.github_token || secrets.STATS || github.token }}
+      token: ${{ github.event.inputs.github_token || secrets.STATS || github.token }}
