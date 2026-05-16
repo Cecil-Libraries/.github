@@ -1,0 +1,17 @@
+name: Update README Cards
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  run-grs:
+    uses: ./.github/workflows/grs.yml
+    with:
+      manual_repos: '[".github", "Cecil-ANSI-Utils", "Cecil-Bridge", "ANSI-Utils-Tester", "Cecil-Testers"]'
+      repository_owner: "Cecil-Libraries"
+      is_user: false
+      theme: "shades-of-purple"
+    secrets:
+      github_token: ${{ secrets.STATS }}
