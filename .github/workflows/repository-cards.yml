@@ -34,7 +34,7 @@ on:
     secrets:
       token:
         required: false
-        
+
 jobs:
   build:
     strategy:
@@ -48,6 +48,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Ensure profile directory exists
+        run: mkdir -p profile
 
       - name: Generate pin card
         uses: readme-tools/github-readme-stats-action@v1
