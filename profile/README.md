@@ -16,6 +16,5 @@ We aim to provide as much as we can (e.g. Helpers, Utilities, Examples, and so o
 * LinkedIn; https://www.linkedin.com/company/cecil-libraries-organization/
 * Discord; https://discord.gg/8yDjSXzvgu
 * GMAIL; cecil.libraries@gmail.com
-* NuGet; https://www.nuget.org/profiles/Cecil_Libraries_Organization_Org
 * NuGet; https://www.nuget.org/profiles/Cecil_Libraries_Organization
 * StoatGames; https://stoatgames.icu/cecil-libraries-organization/
